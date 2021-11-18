@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agnyfonseca.dscatalog.entities.Category;
+import com.agnyfonseca.dscatalog.dto.CategoryDTO;
 import com.agnyfonseca.dscatalog.services.CategoryService;
 
 @RestController //Indica que a classe é um controlador Rest
@@ -22,9 +22,9 @@ public class CategoryResource {
 	//ReponseEntity = objeto que encapsula uma resposta http, <> generic
 	//GetMapping = configura que esse metodo é um Endpoint
 	@GetMapping
-	public ResponseEntity<List<Category>> findAll() {
+	public ResponseEntity<List<CategoryDTO>> findAll() {
 		//service foi chamado, que por sua vez chamou o repository que foi no db,trouxe, instanciou e guardou os obj no list
-		List<Category> list = service.findAll();  
+		List<CategoryDTO> list = service.findAll();  
 		
 		//.ok() = resposta 200 - .body() = corpo da resposta
 		return ResponseEntity.ok().body(list); //retorno a lista
