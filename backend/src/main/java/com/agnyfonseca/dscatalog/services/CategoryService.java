@@ -26,6 +26,7 @@ public class CategoryService {
 	
 	//Garante a integridade da transação
 	//Argumento melhora a perfomance do db, sempre usar em transação de leitura
+	//Buscando todos
 	@Transactional(readOnly = true) 
 	public List<CategoryDTO> findAll() {
 		List<Category> list = repository.findAll();
@@ -39,6 +40,7 @@ public class CategoryService {
 		return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
 	}
 	
+	//Buscando po Id
 	@Transactional(readOnly = true) 
 	public CategoryDTO findById(Long id) {
 		//Obj Optional, abordagem para evitar valor nulo, o retorno nunca será um valor nulo
@@ -47,5 +49,15 @@ public class CategoryService {
 		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
 		
 		return new CategoryDTO(entity); 
+	}
+	
+	//Inserindo novo produto
+	@Transactional
+	public CategoryDTO insert(CategoryDTO dto) {
+		Category entity = new Category();
+		entity.setName(dto.getName());
+		entity = repository.save(entity);
+		return new CategoryDTO(entity);
+		
 	}
 }
