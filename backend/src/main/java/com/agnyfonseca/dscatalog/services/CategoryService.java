@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.agnyfonseca.dscatalog.dto.CategoryDTO;
 import com.agnyfonseca.dscatalog.entities.Category;
 import com.agnyfonseca.dscatalog.repositories.CategoryRepository;
+import com.agnyfonseca.dscatalog.services.exceptions.DatabaseException;
 import com.agnyfonseca.dscatalog.services.exceptions.ResourceNotFoundException;
 
 //Annotation responsável por registrar essa classe como um componente que vai participar
@@ -73,6 +76,20 @@ public class CategoryService {
 		}
 		catch(EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Id not found " + id);
+		}
+	}
+	
+	//Deletando um produto
+	
+	public void delete(Long id) {
+		try {
+			repository.deleteById(id);
+		}
+		catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("Id not found " + id);
+		}
+		catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Integrity violation");
 		}
 	}
 }
