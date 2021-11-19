@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.agnyfonseca.dscatalog.dto.CategoryDTO;
 import com.agnyfonseca.dscatalog.entities.Category;
 import com.agnyfonseca.dscatalog.repositories.CategoryRepository;
-
-import com.agnyfonseca.dscatalog.services.exceptions.EntityNotFoundException;
+import com.agnyfonseca.dscatalog.services.exceptions.ResourceNotFoundException;
 
 //Annotation responsável por registrar essa classe como um componente que vai participar
 //do sistema de injeção de dependencia automatizado do Spring
@@ -40,7 +41,7 @@ public class CategoryService {
 		return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
 	}
 	
-	//Buscando po Id
+	//Buscando por Id
 	@Transactional(readOnly = true) 
 	public CategoryDTO findById(Long id) {
 		//Obj Optional, abordagem para evitar valor nulo, o retorno nunca será um valor nulo
@@ -59,5 +60,19 @@ public class CategoryService {
 		entity = repository.save(entity);
 		return new CategoryDTO(entity);
 		
+	}
+	
+	//Atualizando um produto
+	@Transactional
+	public CategoryDTO update(Long id, CategoryDTO dto) {
+		try {
+			Category entity = repository.getOne(id);
+			entity.setName(dto.getName());
+			entity = repository.save(entity);
+			return new CategoryDTO(entity);
+		}
+		catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Id not found " + id);
+		}
 	}
 }
