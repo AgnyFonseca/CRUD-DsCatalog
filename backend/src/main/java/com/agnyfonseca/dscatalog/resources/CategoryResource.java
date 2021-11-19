@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +29,14 @@ public class CategoryResource {
 		
 		//.ok() = resposta 200 - .body() = corpo da resposta
 		return ResponseEntity.ok().body(list); //retorno a lista
+	}
+	
+	@GetMapping(value = "/{id}") //criando rota /categories/{id}
+	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id) {
+		//@PathVariable está casando o id do param. com o id da rota
+		
+		CategoryDTO dto = service.findById(id); //método findById no Service
+		return ResponseEntity.ok().body(dto);
 	}
 }
 

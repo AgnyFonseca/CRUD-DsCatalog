@@ -1,6 +1,7 @@
 package com.agnyfonseca.dscatalog.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.agnyfonseca.dscatalog.dto.CategoryDTO;
 import com.agnyfonseca.dscatalog.entities.Category;
 import com.agnyfonseca.dscatalog.repositories.CategoryRepository;
+
+import com.agnyfonseca.dscatalog.services.exceptions.EntityNotFoundException;
 
 //Annotation responsável por registrar essa classe como um componente que vai participar
 //do sistema de injeção de dependencia automatizado do Spring
@@ -34,5 +37,15 @@ public class CategoryService {
 		
 		//transforma em stream, depois faz o map, .collect para então retransforma para lista. Expressão Lambda
 		return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true) 
+	public CategoryDTO findById(Long id) {
+		//Obj Optional, abordagem para evitar valor nulo, o retorno nunca será um valor nulo
+		Optional<Category> obj = repository.findById(id);
+		//Category entity = obj.get(); //met. get do Optional obtém o obj dentro do Optional
+		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+		
+		return new CategoryDTO(entity); 
 	}
 }
