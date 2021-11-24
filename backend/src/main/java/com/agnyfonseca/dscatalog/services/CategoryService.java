@@ -52,7 +52,7 @@ public class CategoryService {
 		//Obj Optional, abordagem para evitar valor nulo, o retorno nunca será um valor nulo
 		Optional<Category> obj = repository.findById(id);
 		//Category entity = obj.get(); //met. get do Optional obtém o obj dentro do Optional
-		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		
 		return new CategoryDTO(entity); 
 	}

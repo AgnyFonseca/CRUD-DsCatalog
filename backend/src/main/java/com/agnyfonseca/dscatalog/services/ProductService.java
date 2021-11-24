@@ -58,7 +58,7 @@ public class ProductService {
 		//Obj Optional, abordagem para evitar valor nulo, o retorno nunca será um valor nulo
 		Optional<Product> obj = repository.findById(id);
 		//Product entity = obj.get(); //met. get do Optional obtém o obj dentro do Optional
-		Product entity = obj.orElseThrow(() -> new EntityNotFoundException("Entity not found"));
+		Product entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
 		
 		return new ProductDTO(entity, entity.getCategories()); 
 	}
