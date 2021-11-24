@@ -24,10 +24,10 @@ public class Category implements Serializable {
 	private Long id;
 	private String name;
 	
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //sem expecificar o Time zone = UTC
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //sem expecificar o Time zone = armazena em UTC
 	private Instant createdAt;
 	
-	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //sem expecificar o Time zone = UTC
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE") //sem expecificar o Time zone = armazena em UTC
 	private Instant updatedAt;
 	
 	public Category() {
